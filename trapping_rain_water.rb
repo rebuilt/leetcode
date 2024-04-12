@@ -1,8 +1,11 @@
+# @param {Integer[]} height
+# @return {Integer}
 def trap(heights)
   # Compute in the forward direction
   water_amount_1, last_index = compute(heights)
-  # Chop off all values that we've already been able to compute and compute again in the reverse direction
-  water_amount_2, = compute(heights[last_index, heights.length - 1].reverse)
+  # Compute in the reverse direction
+  last_index = 0 if last_index.nil?
+  water_amount_2,  = compute(heights[last_index, heights.length].reverse)
 
   water_amount_1 + water_amount_2
 end
@@ -38,10 +41,6 @@ def compute(heights)
     tmp_water << left - height
   end
 
-  # Add up all the values in the output array
   amount_of_water = output.flatten.compact.reduce(0) { |num, acc| num + acc }
   [amount_of_water, right_index]
 end
-
-heights = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
-puts trap(heights)
