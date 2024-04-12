@@ -2,7 +2,7 @@ def trap(heights)
   # Compute in the forward direction
   water_amount_1, last_index = compute(heights)
   # Chop off all values that we've already been able to compute and compute again in the reverse direction
-  water_amount_2, last_index = compute(heights[last_index, heights.length - 1].reverse)
+  water_amount_2, = compute(heights[last_index, heights.length - 1].reverse)
 
   water_amount_1 + water_amount_2
 end
