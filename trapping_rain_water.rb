@@ -13,28 +13,27 @@ def compute(heights)
   return [0, 0] if heights.length < 2
 
   left = 0
-  last_index = nil
-  output = []
-  tmp_water = []
+  last_index = 0
+  output = 0
+  tmp_water = 0
 
   heights.each_with_index do |height, index|
     # Look for right boundary
     if height >= left
       # found the right boundary
       # add the temporary water to the result
-      output << tmp_water
+      output += tmp_water
       left = height
       last_index = index
-      tmp_water = []
+      tmp_water = 0
       next
     end
     # Anything else might contain water we need to add to the result
     # add the difference between the left boundary and the height of this element
-    tmp_water << left - height
+    tmp_water += left - height
   end
 
-  amount_of_water = output.flatten.reduce(0) { |num, acc| num + acc }
-  [amount_of_water, last_index || 0]
+  [output, last_index]
 end
 
 heights = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
