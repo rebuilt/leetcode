@@ -1,35 +1,33 @@
 require "byebug"
 module LIS
   def self.longest_ideal_string(s, k)
-    output = []
+    index = 0
+    max = 0
 
-    length = s.length
-    i = length
-    while i > 1
-      substring = s[length - i, length]
-      output << lis(substring, k)
-      i -= 1
+    while index < s.length
+      result = lis(s[index, s.length], k, 0, 0, nil)
+      index += 1
+      max = result if result > max
     end
-    output.max
+    max
   end
 
-  def self.lis(s, k)
-    output = 1
-    last_byte = nil
-    s.each_byte.each_with_index do |byte, index|
-      next last_byte = byte if index.zero?
+  def self.lis(word, k, index, acc, last_byte)
+    return acc if index >= word.length
 
-      next unless (byte - last_byte).abs <= k
+    last_byte = word[index].ord if last_byte.nil?
 
-      output += 1
-      last_byte = byte
-    end
-    output
+    result1 = lis(word, k, index + 1, acc, last_byte)
+    result2 = 0
+    result2 = lis(word, k, index + 1, acc + 1, word[index].ord) if (last_byte - word[index].ord).abs <= k
+
+    [result1, result2].max
   end
 end
 
-# puts LIS.longest_ideal_string("acfgbd", 2)
-# puts LIS.longest_ideal_string("abcd", 3)
-# puts LIS.longest_ideal_string("jxhwaysa", 14)
-# puts LIS.longest_ideal_string("pvjcci", 4)
+puts LIS.longest_ideal_string("acfgbd", 2) # 4
+puts LIS.longest_ideal_string("abcd", 3) # 4
+puts LIS.longest_ideal_string("jxhwaysa", 14) # 5
+puts LIS.longest_ideal_string("pvjcci", 4) # 2
 puts LIS.longest_ideal_string("eduktdb", 15)
+puts LIS.longest_ideal_string("dyyonfvzsretqxucmavxegvlnnjubqnwrhwikmnnrpzdovjxqdsatwzpdjdsneyqvtvorlwbkb", 15)
