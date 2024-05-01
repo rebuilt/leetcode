@@ -3,16 +3,46 @@ def substrings(word)
   length = word.length
   index = 0
   output = 0
-  j = 0
   while index < length
-    hash = Hash.new(0)
-    j = 1
-    while j <= length - index
-      substring = word[index, j]
-      letter = substring[-1]
-      hash[letter] += 1
-      # puts substring if hash.values.select { |num| num.odd? }.count <= 1
-      output += 1 if hash.values.select { |num| num.odd? }.count <= 1
+    j = 0
+    mask_a = 0x0000000000
+    mask_b = 0x0000000000
+    mask_c = 0x0000000000
+    mask_d = 0x0000000000
+    mask_e = 0x0000000000
+    mask_f = 0x0000000000
+    mask_g = 0x0000000000
+    mask_h = 0x0000000000
+    mask_i = 0x0000000000
+    mask_j = 0x0000000000
+    while j < length - index
+      letter = word[j + index]
+      case letter
+      when "a"
+        mask_a ^= 1
+      when "b"
+        mask_b ^= 2
+      when "c"
+        mask_c ^= 3
+      when "d"
+        mask_d ^= 4
+      when "e"
+        mask_e ^= 5
+      when "f"
+        mask_f ^= 6
+      when "g"
+        mask_g ^= 7
+      when "h"
+        mask_h ^= 8
+      when "i"
+        mask_i ^= 9
+      when "j"
+        mask_j ^= 10
+      end
+
+      masks = [mask_a, mask_b, mask_c, mask_d, mask_e, mask_f, mask_g, mask_h, mask_i, mask_j]
+      result = masks.select { |num| num > 0 }.count
+      output += 1 if result <= 1
       j += 1
     end
     index += 1
@@ -21,6 +51,7 @@ def substrings(word)
 end
 
 # words = %w[aba aabb he]
+# words = %w[he]
 words = %w[
   bibacdfehgbchbjicccecacbdeiggideciijgbahifjjhdeddeabbfihbegbagcgbidefijigabfjhbdjfiihggdbjacgjccidedajgaabdibcdfjfjfeifefdeachbcbdadggiagbdfigjadeaadfbadhfjgifeeaagiabddicdejcgaejcdgffggdddffideijchchaffgjhfeaffhbfahieggdahdbeijfjbeaciagfjjbcjdbjgdfeefbgjfhcbajbdghgeieiahadebeiabjedjhbfbhfhajcieibaejefbfeihebbjgciceibbabddcaeehdfdhbeeeffdijfghdfeedfcccfchjhdjddfgehiccdggbdjjghicagdhceiaebfhjhbefghjjcbjbjbfbbdhhdbdbceejaffbdbidaefihcjagaibhihbebhjfggbddhedfcacagegfaiiaeheiggjhfaegffdicgebabceaahjeegafgjgfejfeheafidabjbgafjcdgffdafcgecjdjefcbhefbfghgegfegdabjiicihfdbjjiehjfbjfhgaeacjgfbggggjegffgbabafdhbbiadgfcbfcicjagceeibhagieiddjjhcjdidccgjfbgihadhhjihgdaheibigihefacfbdgfiefehgjbbcggccfcibhbhhjjagjhehciejafbhjeicaieagjagdaaaddfgiibgicgjghdjiddaeihbcbccbfjigdjcachhdcgfheaacfhfajefbccgjcdcaahjaaedcibbjgggajaceijababjafbaccfiffcbedjc faecdbcjjbjccjgcadeeaeddbibjiiecggbchebffdchbdicacdbcgdchdgeciceghcdhfbdhcaagghhhjichcgfdaijicahcihgdejhdafjghhjjeaeajdbiheegghhbfgdidcbbfgbdihedfgghjejafdbeedadcagcfejaaihihfdgdedibiiaaaajeifcfcjeeahhcgidcigjhafibejcadaegbeejbficdjgcjfjcgefeifcijibdhaaccdigjeafcebjaiciicghbheifebdadhdeceidcaijihhecjcfcdagdjhfabejjaijajdeaehfghehggjhaidibdidggfghejbggcadhfgjfaeehhicbgjeibbhbijhfghiejadefebigahfeheageagejehgbfajjadicggiegbcbeigdjbcijagajgfaihedcfcjgibiicbjegjgadahdeefajjbajdhcchdeiediecefacdabeegedhcfbiefjagacbfbgbdhejieffhjhcifijjfbccdfgdhhjfbdcejefedgihdjcahaggcjdfafciecibacijddbebccefchjbjfhgeghbhgaacehebafbdghdjdjdbiajeaiiccifcdcjhiaadchfagjdbhfhhiddhaehcjeafediehghbjaafiicgfejadcahfdgagfadbaiehaeaaiifcbcegihfbiacaadjjgahibbfijdbhbcfhhgccihdahchdeeahjeabeiegdgjfdgdfabfiajhagfdhhjaafacaihiagacgijfjdfafehicbeaicafciegfbefehddbfbgfhdcdchabgdigbceeiegabggeiafejbbdgjgijdfjiibadgfjehhaehjdhcdghadeejdfaicjdajjbiachaiadcghjfbefhgdfagbjibjfhegcbeiiecaaifiidgidbcbgidfgibhjcgjcifaegfgbifcjdgddadgedhbeidgbagiddfbaedhjefgjgfdbcabjcigahfbjcjhdhccjjhhffjcbhjhaeaiifajhjcfaejehjabeeggfaebjeiaacaabijjbeiggjfbdfcfgjcebbehbhcjjggaefgbdhfaigaagfafegbbahfiaabijcffbjddjefcfhhdbbgdjiiabdeaihfccbbfdaifcjhidfijdjdbaebaibfcijhhcddachacfbgddfejeafeddjabbdgcfibgijbcjjijhagddidhhaijiafbaajgejihadjdcdjagbfghjabdhhbbicgceifddgbjeceejbigjfgdedeejbjhdibjghigegjigghghhedhdadgedgbhebedjgjbjjhfedgbhhaebgaeebiajijdhdcacffbfedcbdebidbhieijdcbcdfjgdejehbgecgjcdcfhihgajjggffbaaheiabbbebjcbhdhaajbhicibgajddceaaacgaighhbaacbcbdbdbfacgiaaaaaiedfhcgfgfhhgeeidhgghfbbaadfegchahjcebacbhibbbjbhechefigefhcdcagjjhbhfggjgejfaceeebfibaegfchdabdjgfdjjcacgiifcdcigcfjbegddafefaiaihcbdgdccgiijejdadehgibbagjeajafaggehdajahfcbadjibdgjjcigccbdeiadijejhcjiihcbjijgabhcjfgaiajjigefiddhjcbjjhijbbgbjjeffedffdefbdbhifcidajichgcdchafcfhffifgcfedgafgdhbcedafabhgaejbhdejadiagibiijbdeeggejigadcedbcfbbbcijhjdhdhjceecjjbbfbegegahefigfeahgjbeddaedeaefeehhdhbcdiafhediejdbgaicahgeedfcffjagfgccbbfaajadaeijegfffjiidhgiiadiecbhifeicigjegijecgdjihfbjabigfhbjeejbfghfddehechdjffdbadieibjdddeaejhgijhhihejjcibbaaagbihcagifcjhebhgcjdejgabjjabgbfbbigbjccggbegfcfebfbcjaffhgcjfadaeggcajbgegdejhbfjiehbfgacdgaedeicigeejjgfijjjcgdjaeiadgjhgcdjfgdeagfcfdaicffifgbfdjbebeeadcdbdihjfijiiehbchhbdbbjgcgaejcefacjahcgaeajajejehhbdadihbcjfihaejjbabegbiehjhiccdacjaacdgcbfabgfeifchacbegffhccdgihbbbdcjihibjbjjdbgcfjcehedfjfahajbcfbfdhcgbjdcacbbafejafdciideecfacdhcjdbaigcieghigjfhacfeaifjifchdiggijcfaihhbaifcfjiafhffebbdcfhhacgadhcdcfcieifiifdjhhgjjiicbjjjijahcjijehbghfbbigiaieheiehbdfagijaghhjbfgbbdiajiadbddhbcidahiejehcgcjdegfidhhhcebgfhcifagjdiigicdedfjcifdbcfejifcihjgjeggbfifgbeeejcjfadadafghhhgaifegcajffcceedaejbdidhjajhabigfbaegjiejgaihhahecfccefcfgdhgaaabeiibibgdcgdeajbbjceififfdebdjcigehdgdjbgajhjhigjifejjccheceabcgbafbibiibgiicefefhiceigjhijjafdeiafffgcacjdccadcbecieegfgbfdejiafdhdhhfcjhbfjbehdfdfgcbjijiiddcafaaedcacedfebcafhcibcghhcieihdjdgbeaddgdbjheedjgihffbcbiaccbcgibjgcfagjgcbhhbbaafagefgbfcfdfajecfdhdfjifbffcacfbeccdbfgieegefjdhgdffcfjfajafhggfdjhhfhabgdgfcjhjgjjgicahghegdjddabdiechjdcbaichjijbbgehfgadibgajgdebfgahiidibahabgbcbhfddgefjgjbhbjgjdhhfbccheibbfcebjciafgbgijchchedeahagbcbegjehjgfejhcgihcbiheggeehjcigbjebddcbbedfjieijjjbdafbcdhajchgbbhebeijgheaghjhfidceiediagjhggjchefdjfhbadihaaggdchfhfbdifbibbjahbfadihefeaedgcedgdffdjecdhbhfjebihfgfbcfgieedhcijcfgaiifedebbefbgbgaihiafgafbchggdbceeiiadcbgfbfedihbjidicifdjbggebcdcjbgjfabadfgifiiehfffdfbfidghdhjieiifehiccabechjhggfbcaeccghdchccjhchgcjhdehjjecfbfbgjbabjjdjcgadfaffiicgabheadagadhfchibdbdbfeghdhhcedghdfahcgcihaaaeabfbghijgbbbfjaejhidbaaefgeiihdgdfaeijihfifjdcdjjbjfifdbhdhgeiedfcfcecjeecjcaccjjedefabaaghfbcgdagbdbjggjgjgijcijbbbeddiahahhcbjieabehcjgajcihhdjbgjibbiidigjgifhdididaifcfadcghgfceidhicfegaacideifeighghaggdacdhaiaaffafgchgaffhfjhaddgiaigjefbeabgfeaaibabffiiadgfgcddhfiijahcdccichdeebajhfacajgcihhjccajfdehbaehbdfebcaafiahibjbchcfggicbddbhhbbcfghdehjijhggiidagebfdhaifeghajabbejcgcbigifbedgaagdcccagbeccifgfbdhaidddbdehcafbefcifjjiiibb
 ]
