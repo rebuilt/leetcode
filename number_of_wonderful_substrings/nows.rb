@@ -5,44 +5,33 @@ def substrings(word)
   output = 0
   while index < length
     j = 0
-    mask_a = 0x0000000000
-    mask_b = 0x0000000000
-    mask_c = 0x0000000000
-    mask_d = 0x0000000000
-    mask_e = 0x0000000000
-    mask_f = 0x0000000000
-    mask_g = 0x0000000000
-    mask_h = 0x0000000000
-    mask_i = 0x0000000000
-    mask_j = 0x0000000000
+    mask = 0b0000000000
     while j < length - index
       letter = word[j + index]
       case letter
       when "a"
-        mask_a ^= 1
+        mask ^= 0b0000000001
       when "b"
-        mask_b ^= 2
+        mask ^= 0b0000000010
       when "c"
-        mask_c ^= 3
+        mask ^= 0b0000000100
       when "d"
-        mask_d ^= 4
+        mask ^= 0b0000001000
       when "e"
-        mask_e ^= 5
+        mask ^= 0b0000010000
       when "f"
-        mask_f ^= 6
+        mask ^= 0b0000100000
       when "g"
-        mask_g ^= 7
+        mask ^= 0b0001000000
       when "h"
-        mask_h ^= 8
+        mask ^= 0b0010000000
       when "i"
-        mask_i ^= 9
+        mask ^= 0b0100000000
       when "j"
-        mask_j ^= 10
+        mask ^= 0b1000000000
       end
 
-      masks = [mask_a, mask_b, mask_c, mask_d, mask_e, mask_f, mask_g, mask_h, mask_i, mask_j]
-      result = masks.select { |num| num > 0 }.count
-      output += 1 if result <= 1
+      output += 1 if mask.to_s(2).count("1") <= 1
       j += 1
     end
     index += 1
